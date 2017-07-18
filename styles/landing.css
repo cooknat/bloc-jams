@@ -30,7 +30,13 @@ body.landing {
     position: relative;
     display: table;
     width: 100%;
+<<<<<<< HEAD
 
+=======
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+>>>>>>> checkpoint-5-collectionview
 }
 
 .point {
