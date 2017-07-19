@@ -16,23 +16,28 @@ body {
 
 
 
-    .navbar {
-        position: relative;
-        padding: 0.5rem;
-        /* #1 */
-        background-color: rgba(101,18,95,0.5);
-        /* #2 */
-        z-index: 1;
-    }
+  .navbar {
+      position: relative;
+      padding: 0.5rem;
+      /* #1 */
+      background-color: rgba(101,18,95,0.5);
+      /* #2 */
+      z-index: 1;
+  }
+
+
 
 .navbar .logo {
-    position: relative; /* positioning will be explained in a resource */
+    position: relative;
     left: 2rem;
     cursor: pointer;
 }
 .container {
     margin: 0 auto;
     max-width: 64rem;
+}
+.container.narrow {
+    max-width: 56rem;
 }
 .navbar .links-container {
      display: table;
@@ -68,6 +73,11 @@ body {
      color: rgb(233,50,117);
  }
 
+ .links-container .navbar-link:active {
+     color: rgb(233,50,117);
+     background-color: white;
+ }
+
 /* Medium and small screens (640px) */
  @media (min-width: 640px) {
    /* Style information will go here */
@@ -89,6 +99,17 @@ body {
  @media (min-width: 1024px) {
    /* Style information will go here */
    html { font-size: 120%; }
+   .column {
+    float: left;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .column.full { width: 100%; }
+  .column.two-thirds { width: 66.7%; }
+  .column.half { width: 50%; }
+  .column.third { width: 33.3%; }
+  .column.fourth { width: 25%; }
+  .column.flow-opposite { float: right; }
  }
  .clearfix::before, .clearfix::after {
          content: " ";
