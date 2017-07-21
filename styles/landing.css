@@ -30,13 +30,9 @@ body.landing {
     position: relative;
     display: table;
     width: 100%;
-<<<<<<< HEAD
-
-=======
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
->>>>>>> checkpoint-5-collectionview
 }
 
 .point {
@@ -45,6 +41,19 @@ body.landing {
     width: 33.3%;
     padding: 2rem;
     text-align: center;
+    position: relative;
+    padding: 2rem;
+    text-align: center;
+    opacity: 0;
+    -webkit-transform: scaleX(0.9) translateY(3rem);
+    -moz-transform: scaleX(0.9) translateY(3rem);
+    transform: scaleX(0.9) translateY(3rem);
+    -webkit-transition: all 0.25s ease-in-out;
+    -moz-transition: all 0.25s ease-in-out;
+    transition: all 0.25s ease-in-out;
+    -webkit-transition-delay: 0.2s;
+    -moz-transition-delay: 0.2s;
+    transition-delay: 0.2s;
 }
 
 .point .point-title {
