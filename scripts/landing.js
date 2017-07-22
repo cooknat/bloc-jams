@@ -10,9 +10,7 @@ var pointsArray = document.getElementsByClassName('point');
 
      }
 
-     for(var i=0; i<points.length; i++){
-       revealPoint(i);
-     }
+     forEach(pointsArray, revealPoint);
 
  };
 
@@ -31,3 +29,5 @@ var pointsArray = document.getElementsByClassName('point');
        }
    });
 }
+
+//(edit_link).click(function() { revealPoint(elem) });
