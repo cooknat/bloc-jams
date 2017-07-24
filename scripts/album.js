@@ -30,10 +30,29 @@
      ]
  };
 
+ // Assignment Example Album
+ var albumGoats = {
+     title: 'Leaves and Branches',
+     artist: 'Goats in Trees',
+     label: 'EM',
+     year: '2010',
+     albumArtUrl: 'assets/images/album_covers/22goats.png',
+     songs: [
+         { title: 'Oak', duration: '1:01' },
+         { title: 'Ash', duration: '5:01' },
+         { title: 'Beech', duration: '3:21'},
+         { title: 'Lime', duration: '3:14' },
+         { title: 'Chestnut', duration: '2:15'},
+         { title: 'Alder', duration: '3:21'},
+         { title: 'Elm', duration: '3:14' },
+         { title: 'Scots Pine', duration: '2:15'}
+     ]
+ };
+
  var createSongRow = function(songNumber, songName, songLength) {
       var template =
          '<tr class="album-view-song-item">'
-       + '  <td class="song-item-number">' + songNumber + '</td>'
+       + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
        + '  <td class="song-item-title">' + songName + '</td>'
        + '  <td class="song-item-duration">' + songLength + '</td>'
        + '</tr>'
@@ -65,6 +84,48 @@
      }
  };
 
+ var albumCover = document.getElementsByClassName('album-cover-art')[0];
+ var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
+ var songRows = document.getElementsByClassName('album-view-song-item');
+ var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
+
+
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
+
+    albumCover.addEventListener("click", toggleAlbum);
+    songListContainer.addEventListener('mouseover', function(event) {
+         // #1
+         if (event.target.parentElement.className === 'album-view-song-item') {
+           event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
+        }
+     });
+
+     for (var i = 0; i < songRows.length; i++) {
+         songRows[i].addEventListener('mouseleave', function(event) {
+           // Selects first child element, which is the song-item-number element
+           this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
+
+         });
+     }
+
  };
+
+ var getCurrentAlbum = function(){
+
+    return document.getElementsByClassName('album-view-title')[0].firstChild.nodeValue;
+  }
+
+ var toggleAlbum = function(){
+
+       var album = getCurrentAlbum();
+       if(album==="Leaves and Branches"){
+         setCurrentAlbum(albumMarconi);
+       }
+       else if(album==="The Telephone"){
+         setCurrentAlbum(albumPicasso);
+       }
+       else if(album==="The Colors"){
+         setCurrentAlbum(albumGoats);
+       }
+ }
