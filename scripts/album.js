@@ -82,6 +82,15 @@
      for (var i = 0; i < album.songs.length; i++) {
          albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
      }
+
+      var songRows = document.getElementsByClassName('album-view-song-item');
+     for (var i = 0; i < songRows.length; i++) {
+         songRows[i].addEventListener('mouseleave', function(event) {
+           // Selects first child element, which is the song-item-number element
+           this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
+
+         });
+     }
  };
 
  var albumCover = document.getElementsByClassName('album-cover-art')[0];
@@ -101,13 +110,13 @@
         }
      });
 
-     for (var i = 0; i < songRows.length; i++) {
+     /*for (var i = 0; i < songRows.length; i++) {
          songRows[i].addEventListener('mouseleave', function(event) {
            // Selects first child element, which is the song-item-number element
            this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
 
          });
-     }
+     }*/
 
  };
 
