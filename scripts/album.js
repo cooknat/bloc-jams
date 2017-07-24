@@ -30,6 +30,25 @@
      ]
  };
 
+ // Assignment Example Album
+ var albumGoats = {
+     title: 'Leaves and Branches',
+     artist: 'Goats in Trees',
+     label: 'EM',
+     year: '2010',
+     albumArtUrl: 'assets/images/album_covers/22goats.png',
+     songs: [
+         { title: 'Oak', duration: '1:01' },
+         { title: 'Ash', duration: '5:01' },
+         { title: 'Beech', duration: '3:21'},
+         { title: 'Lime', duration: '3:14' },
+         { title: 'Chestnut', duration: '2:15'},
+         { title: 'Alder', duration: '3:21'},
+         { title: 'Elm', duration: '3:14' },
+         { title: 'Scots Pine', duration: '2:15'}
+     ]
+ };
+
  var createSongRow = function(songNumber, songName, songLength) {
       var template =
          '<tr class="album-view-song-item">'
@@ -66,5 +85,28 @@
  };
 
  window.onload = function() {
-     setCurrentAlbum(albumPicasso);
+     setCurrentAlbum(albumGoats);
+
+     var albumCover = document.getElementsByClassName('album-cover-art')[0];
+    albumCover.addEventListener("click", toggleAlbum);
+
  };
+
+ var getCurrentAlbum = function(){
+
+    return document.getElementsByClassName('album-view-title')[0].firstChild.nodeValue;
+  }
+
+ var toggleAlbum = function(){
+
+       var album = getCurrentAlbum();
+       if(album==="Leaves and Branches"){
+         setCurrentAlbum(albumMarconi);
+       }
+       else if(album==="The Telephone"){
+         setCurrentAlbum(albumPicasso);
+       }
+       else if(album==="The Colors"){
+         setCurrentAlbum(albumGoats);
+       }
+ }
