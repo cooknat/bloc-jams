@@ -99,17 +99,37 @@
          });
      }
  };
-
+//counter variable to see if this is the first time the function has been called
+  var generation = 1;
   var findParentByClassName = function(element, cName){
-     if(element.parentNode.className === cName){
-       //console.log("this is my mum");
-       return element.parentNode;
+    
+    if(element.parentNode !== null){
 
-     }else{
-      //console.log("not this time!");
-      element = element.parentNode;
-      findParentByClassName(element, cName);
-     }
+      if(element.parentNode.className === cName){
+        //leaving function, reset counter variable to 1
+        generation = 1;
+        return element.parentNode;
+
+      }else{
+       console.log("not this time!");
+       generation++;
+       element = element.parentNode;
+       findParentByClassName(element, cName);
+      }
+
+    }
+    else{
+      if(generation === 1){
+         console.log("no parent found");
+       }
+       else{
+         //leaving function, reset counter variable to 1
+         generation = 1;
+         console.log("no parent found with that class name");
+       }
+    }
+
+
   };
 
   var getSongItem = function(element) {
@@ -174,7 +194,9 @@ var clickHandler = function(targetElement) {
         }
      });
 
-     findParentByClassName(songRows[1].parentNode, "album");
+     findParentByClassName(songRows[1].parentNode, "scissors");
+     findParentByClassName(document, "scissors");
+
 
 
  };
