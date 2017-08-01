@@ -133,7 +133,8 @@
 
 var clickHandler = function(targetElement) {
     var songItem = getSongItem(targetElement);
-
+    //console.log(songItem);
+    //console.log(currentlyPlayingSong);
     if (currentlyPlayingSong === null) {
         songItem.innerHTML = pauseButtonTemplate;
         currentlyPlayingSong = songItem.getAttribute('data-song-number');
