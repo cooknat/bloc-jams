@@ -103,11 +103,10 @@
 
   var findParentByClassName = function(element, cName){
      if(element.parentNode.className === cName){
-       //console.log("this is my mum");
+       console.log("this is my mum " + element + " " + element.className + " " + element.parentNode.className);
        return element.parentNode;
-
      }else{
-      //console.log("not this time!");
+      console.log("not this time! " + element + " " + element.className + " " + element.parentNode.className);
       element = element.parentNode;
       findParentByClassName(element, cName);
      }
@@ -133,8 +132,6 @@
 
 var clickHandler = function(targetElement) {
     var songItem = getSongItem(targetElement);
-    //console.log(songItem);
-    //console.log(currentlyPlayingSong);
     if (currentlyPlayingSong === null) {
         songItem.innerHTML = pauseButtonTemplate;
         currentlyPlayingSong = songItem.getAttribute('data-song-number');
