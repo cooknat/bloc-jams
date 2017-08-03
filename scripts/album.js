@@ -176,7 +176,29 @@
         currentSoundFile.setVolume(volume);
         }
       };
+      /*If a song is paused and the play button is clicked in the player bar, it will
 
+            Change the HTML of the player bar's play button to a pause button
+
+      If the song is playing (so a current sound file exist), and the pause button is clicked
+
+            Change the HTML of the player bar's pause button to a play button
+            */
+    var togglePlayFromPlayerBar = function(){
+
+         var $currentSong =  getSongNumberCell(currentlyPlayingSongNumber);
+
+         if(currentSoundFile.isPaused()){
+          $currentSong.html(pauseButtonTemplate);
+          $playPause.html(playerBarPauseButton);
+          currentSoundFile.play();
+         }
+         else if(currentSoundFile){
+           $currentSong.html(playButtonTemplate);
+           $playPause.html(playerBarPlayButton);
+           currentSoundFile.pause();
+         }
+    };
 
 
 
@@ -185,6 +207,8 @@
     var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
     var playerBarPlayButton = '<span class="ion-play"></span>';
     var playerBarPauseButton = '<span class="ion-pause"></span>';
+
+
 
     // Store state of playing songs
     var currentAlbum = null;
@@ -195,12 +219,14 @@
 
     var $previousButton = $('.main-controls .previous');
     var $nextButton = $('.main-controls .next');
+    var $playPause = $('.main-controls .play-pause');
 
 
   $(document).ready(function() {
      setCurrentAlbum(albumPicasso);
      $previousButton.click(previousSong);
      $nextButton.click(nextSong);
+     $playPause.click(togglePlayFromPlayerBar);
     albumCover.addEventListener("click", toggleAlbum);
  });
 
