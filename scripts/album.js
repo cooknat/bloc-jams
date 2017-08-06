@@ -10,6 +10,12 @@
 
            var clickHandler = function() {
             	var songNumber = parseInt($(this).attr('data-song-number'));
+
+              var $volumeFill = $('.volume .fill');
+              var $volumeThumb = $('.volume .thumb');
+              $volumeFill.width(currentVolume + '%');
+              $volumeThumb.css({left: currentVolume + '%'});
+
             	if (currentlyPlayingSongNumber !== null) {
             		// Revert to song number for currently playing song because user started playing new song.
             		var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
@@ -21,6 +27,7 @@
             		setSong(songNumber);
                 updatePlayerBarSong();
                 currentSoundFile.play();
+                updateSeekBarWhileSongPlays();
             	} else if (currentlyPlayingSongNumber === songNumber) {
             		// Switch from Pause -> Play button to pause currently playing song.
             		$(this).html(playButtonTemplate);
@@ -92,6 +99,19 @@
       var songRows = document.getElementsByClassName('album-view-song-item');
    };
 
+   var updateSeekBarWhileSongPlays = function() {
+    if (currentSoundFile) {
+        // #10
+        currentSoundFile.bind('timeupdate', function(event) {
+            // #11
+            var seekBarFillRatio = this.getTime() / this.getDuration();
+            var $seekBar = $('.seek-control .seek-bar');
+
+            updateSeekPercentage($seekBar, seekBarFillRatio);
+        });
+    }
+};
+
    var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
     var offsetXPercent = seekBarFillRatio * 100;
     // #1
@@ -104,39 +124,53 @@
     $seekBar.find('.thumb').css({left: percentageString});
  };
 
+
+/*
+Checks the class of the seek bar's parent to determine whether the current seek bar is changing the volume or seeking to a song position
+If it's the playback seek bar, seek to the position of the song determined by the seekBarFillRatio
+Otherwise, set the volume based on the seekBarFillRatio
+*/
  var setupSeekBars = function() {
      var $seekBars = $('.player-bar .seek-bar');
 
      $seekBars.click(function(event) {
-         // #3
-         var offsetX = event.pageX - $(this).offset().left;
-         var barWidth = $(this).width();
-         // #4
-         var seekBarFillRatio = offsetX / barWidth;
-
-         // #5
-         updateSeekPercentage($(this), seekBarFillRatio);
-     });
-
-     $seekBars.find('.thumb').mousedown(function(event) {
-    // #8
-    var $seekBar = $(this).parent();
-
-    // #9
-    $(document).bind('mousemove.thumb', function(event){
-        var offsetX = event.pageX - $seekBar.offset().left;
-        var barWidth = $seekBar.width();
+        var offsetX = event.pageX - $(this).offset().left;
+        var barWidth = $(this).width();
         var seekBarFillRatio = offsetX / barWidth;
 
-        updateSeekPercentage($seekBar, seekBarFillRatio);
+        if ($(this).parent().attr('class') == 'seek-control') {
+            seek(seekBarFillRatio * currentSoundFile.getDuration());
+        } else {
+            setVolume(seekBarFillRatio * 100);
+        }
+
+        updateSeekPercentage($(this), seekBarFillRatio);
     });
+
+    $seekBars.find('.thumb').mousedown(function(event) {
+
+        var $seekBar = $(this).parent();
+
+        $(document).bind('mousemove.thumb', function(event){
+            var offsetX = event.pageX - $seekBar.offset().left;
+            var barWidth = $seekBar.width();
+            var seekBarFillRatio = offsetX / barWidth;
+
+            if ($seekBar.parent().attr('class') == 'seek-control') {
+                seek(seekBarFillRatio * currentSoundFile.getDuration());
+            } else {
+                setVolume(seekBarFillRatio);
+            }
+
+            updateSeekPercentage($seekBar, seekBarFillRatio);
+        });
 
     // #10
     $(document).bind('mouseup.thumb', function() {
         $(document).unbind('mousemove.thumb');
         $(document).unbind('mouseup.thumb');
     });
-});
+  });
  };
 
 
@@ -179,6 +213,7 @@
       // Set a new current song
       setSong(currentSongIndex + 1);
       currentSoundFile.play();
+      updateSeekBarWhileSongPlays();
 
       // Update the Player Bar information
       updatePlayerBarSong();
@@ -205,6 +240,7 @@
     // Set a new current song
     setSong(currentSongIndex + 1);
     currentSoundFile.play();
+    updateSeekBarWhileSongPlays();
 
     // Update the Player Bar information
     updatePlayerBarSong();
@@ -217,6 +253,12 @@
     $previousSongNumberCell.html(pauseButtonTemplate);
     $lastSongNumberCell.html(lastSongNumber);
 };
+
+    var seek = function(time) {
+        if (currentSoundFile) {
+            currentSoundFile.setTime(time);
+        }
+    }
 
     var setVolume = function(volume){
         if (currentSoundFile) {
