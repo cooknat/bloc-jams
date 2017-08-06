@@ -101,7 +101,7 @@
      }
  };
 
-  var findParentByClassName = function(element, cName){
+  /*var findParentByClassName = function(element, cName){
      if(element.parentNode.className === cName){
        console.log("this is my mum " + element + " " + element.className + " " + element.parentNode.className);
        return element.parentNode;
@@ -110,6 +110,16 @@
       element = element.parentNode;
       findParentByClassName(element, cName);
      }
+  };*/
+
+  var findParentByClassName = function(element, targetClass) {
+    if (element) {
+        var currentParent = element.parentElement;
+        while (currentParent.className !== targetClass && currentParent.className !== null) {
+            currentParent = currentParent.parentElement;
+        }
+        return currentParent;
+    }
   };
 
   var getSongItem = function(element) {
