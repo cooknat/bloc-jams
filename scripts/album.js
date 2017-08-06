@@ -3,7 +3,7 @@
          '<tr class="album-view-song-item">'
        + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
        + '  <td class="song-item-title">' + songName + '</td>'
-       + '  <td class="song-item-duration">' + songLength + '</td>'
+       + '  <td class="song-item-duration">' +  filterTimeCode(songLength) + '</td>'
        + '</tr>'
        ;
            var $row = $(template);
@@ -74,7 +74,8 @@
        $('.currently-playing .artist-name').text(currentAlbum.artist);
        $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
        $('.main-controls .play-pause').html(playerBarPauseButton);
-  };
+       setTotalTimeInPlayerBar(currentSongFromAlbum.duration);
+};
 
   var setCurrentAlbum = function(album) {
      // #1
@@ -106,7 +107,7 @@
             // #11
             var seekBarFillRatio = this.getTime() / this.getDuration();
             var $seekBar = $('.seek-control .seek-bar');
-
+            setCurrentTimeInPlayerBar(this.getTime());
             updateSeekPercentage($seekBar, seekBarFillRatio);
         });
     }
@@ -124,12 +125,6 @@
     $seekBar.find('.thumb').css({left: percentageString});
  };
 
-
-/*
-Checks the class of the seek bar's parent to determine whether the current seek bar is changing the volume or seeking to a song position
-If it's the playback seek bar, seek to the position of the song determined by the seekBarFillRatio
-Otherwise, set the volume based on the seekBarFillRatio
-*/
  var setupSeekBars = function() {
      var $seekBars = $('.player-bar .seek-bar');
 
@@ -196,7 +191,7 @@ Otherwise, set the volume based on the seekBarFillRatio
 
     var getSongNumberCell = function(number){
        return $('.song-item-number[data-song-number="' + number + '"]');
-    }
+    };
 
     var nextSong = function() {
       var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
@@ -258,13 +253,36 @@ Otherwise, set the volume based on the seekBarFillRatio
         if (currentSoundFile) {
             currentSoundFile.setTime(time);
         }
-    }
+    };
 
     var setVolume = function(volume){
         if (currentSoundFile) {
         currentSoundFile.setVolume(volume);
         }
       };
+
+
+    var setCurrentTimeInPlayerBar = function(currentTime){
+          $('.current-time').html(filterTimeCode(currentTime));
+    };
+
+    var setTotalTimeInPlayerBar = function(totalTime){
+       $('.total-time').html(filterTimeCode(totalTime));
+    };
+
+    var filterTimeCode = function(timeInSeconds){
+      var mins = 0;
+      var secs = 0;
+      var totalTime = parseFloat(timeInSeconds);
+      mins = Math.floor(totalTime/60);
+      secs = Math.floor(totalTime%60);
+      if(secs < 10){
+        return mins + ":0" + secs;
+      }
+      else{
+          return mins + ":" + secs;
+      }
+    };
 
     var albumCover = document.getElementsByClassName('album-cover-art')[0];
     var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
@@ -294,7 +312,7 @@ Otherwise, set the volume based on the seekBarFillRatio
  var getCurrentAlbum = function(){
 
     return document.getElementsByClassName('album-view-title')[0].firstChild.nodeValue;
-  }
+  };
 
  var toggleAlbum = function(){
 
@@ -308,4 +326,4 @@ Otherwise, set the volume based on the seekBarFillRatio
        else if(album==="The Colors"){
          setCurrentAlbum(albumGoats);
        }
- }
+ };
